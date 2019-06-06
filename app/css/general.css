@@ -1,0 +1,78 @@
+:root{
+    --mdc-theme-primary:#00bcd4;
+    --mdc-theme-secondary:#00e5ff;
+    user-select: none;
+}
+
+
+body{
+    margin: 0;
+    padding: 0;
+    width: 300px;
+    height: 500px;
+}
+
+#title_bar{
+    -webkit-app-region: drag;
+    background-color: #FFFFFF;
+    height: 30px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+button{
+    -webkit-app-region: no-drag;
+    outline:0;
+}
+
+#close_window_btn{
+    background-image: url("../image/ic_close.svg");
+}
+
+#minimize_window_btn{
+    background-image: url("../image/ic_minimize.svg");
+}
+
+.window_action_btn{
+    float: right;
+    width: 30px;
+    height: 30px;
+    border: 0;
+
+    background-color: transparent;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+}
+
+.window_action_btn:hover{
+    background-color: rgba(0,0,0,0.1);
+}
+
+.window_action_btn:active{
+    background-color: rgba(0,0,0,0.3);
+}
+
+p{
+    font-family: "Segoe UI",Arial,sans-serif;
+}
+
+.window_title{
+    margin: 5px 0 0 5px;
+    font-weight: 500;
+    vertical-align: middle;
+    font-size: 15px;
+    float: left;
+}
+
+.window_icon{
+    margin: 5px 0 0 5px;
+    float: left;
+    width: 20px;
+    height: 20px;
+}
+
+.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label{
+    color: #00bcd4;
+}

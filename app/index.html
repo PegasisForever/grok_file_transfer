@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GROK File Transfer</title>
+    <link rel="stylesheet" href="css/material-components-web.min.css">
+    <link rel="stylesheet" href="css/general.css">
+    <script src="js/material-components-web.min.js"></script>
+
+    <script>
+        const {ipcRenderer} = require('electron');
+        function closeWindow() {
+            ipcRenderer.send("window-operation","close");
+        }
+
+        function minimizeWindow() {
+            ipcRenderer.send("window-operation","minimize");
+        }
+
+        function onKeyUp() {
+            const deviceName = document.getElementById("device_name_textfield").value;
+            const done_btn=document.getElementById("done_btn");
+            if (deviceName !== "") {
+                done_btn.disabled=false;
+            }else {
+                done_btn.disabled=true;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="title_bar">
+        <img class="window_icon" src="image/ic_icon.svg" alt="icon">
+        <p class="window_title">GROK File Transfer</p>
+        <button id="close_window_btn" class="window_action_btn" onclick="closeWindow()"></button>
+        <button id="minimize_window_btn" class="window_action_btn" onclick="minimizeWindow()"></button>
+    </div>
+
+    <p style="text-align: center;font-size: 50px;margin-bottom: 30px">Welcome!</p>
+    <p style="padding: 10px;text-align: center;font-size: 20px">GROK File Transfer is a cross-platform tool for fast file transferring.</p>
+
+    <p style="text-align: center;margin-bottom: 10px;margin-top: 20px">Give this device a name:</p>
+    <div class="mdc-text-field mdc-text-field--outlined" style="width: 200px;left: 50%;margin-left: -100px">
+        <input id="device_name_textfield" class="mdc-text-field__input" onkeyup="onKeyUp()">
+        <div class="mdc-notched-outline">
+            <div class="mdc-notched-outline__leading"></div>
+            <div class="mdc-notched-outline__notch">
+                <label class="mdc-floating-label">Device Name</label>
+            </div>
+            <div class="mdc-notched-outline__trailing"></div>
+        </div>
+    </div>
+
+    <button id="done_btn" disabled class="mdc-button mdc-button--outlined" style="top:100px;left: 100px">Done</button>
+
+<script>
+    const mdcTextfield = require('@material/textfield');
+    const mdcRipple = require("@material/ripple");
+
+    const textField = new mdcTextfield.MDCTextField(document.querySelector('.mdc-text-field'));
+    const buttonRipple = new mdcRipple.MDCRipple(document.querySelector('.mdc-button'));
+</script>
+</body>
+</html>
