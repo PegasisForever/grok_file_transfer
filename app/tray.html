@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tray</title>
+    <link rel="stylesheet" href="css/material-components-web.min.css">
+    <link rel="stylesheet" href="css/general.css">
+    <script src="js/material-components-web.min.js"></script>
+    <script src="js/qrcode.js"></script>
+
+    <script>
+        const {ipcRenderer} = require('electron');
+        const Store = require('electron-store');
+        const store = new Store();
+        let deviceID="53268";
+
+        function minimizeWindow() {
+            ipcRenderer.send("window-operation",{window: "tray", operation: "minimize"});
+        }
+
+        window.onload=function () {
+            const QRCode = require('qrcode');
+
+            QRCode.toCanvas(document.getElementById("qrcode_canvas"), deviceID,
+                { errorCorrectionLevel: 'H',scale:8, margin: 0 }, function (error) {
+                if (error) console.error(error);
+                console.log('success!');
+            });
+
+            document.getElementById("deviceID_text").innerText=deviceID;
+            document.getElementById("window_title").innerText=store.get("device_name");
+        }
+    </script>
+    <style>
+        body{
+            width: 300px;
+            height: 300px;
+        }
+
+        #deviceID_text{
+            letter-spacing:7px;
+            font-family: "Fira Code","Source Code Pro",monospace ;
+            position: absolute;
+            top:235px;
+            width: 100%;
+            text-align: center;
+            font-size: 35px;
+        }
+    </style>
+</head>
+<body>
+    <img class="window_icon" src="image/ic_icon.svg" alt="icon">
+    <button id="minimize_window_btn" class="window_action_btn" onclick="minimizeWindow()"></button>
+    <canvas id="qrcode_canvas"></canvas>
+    <p id="deviceID_text"></p>
+
+    <p id="window_title" class="window_title"></p>
+</body>
+</html>
