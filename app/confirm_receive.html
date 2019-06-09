@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Receive</title>
+    <link rel="stylesheet" href="css/material-components-web.min.css">
+    <link rel="stylesheet" href="css/general.css">
+    <script src="js/material-components-web.min.js"></script>
+    <script>
+        const {ipcRenderer} = require('electron');
+        let remainTime=15;
+
+        ipcRenderer.on("pass-data", (event, arg) => {
+            if (arg.window === "confirm_receive") {
+                document.getElementById("window_title").innerText="File from "+arg.sender_name+":";
+                document.getElementById("file_name_text").innerText=arg.file_name;
+            }
+        });
+
+        function decreaseTime(){
+            setTimeout(function(){
+                remainTime--;
+                if (remainTime < 0) {
+                    ipcRenderer.send("window-operation",{window: "confirm_receive", operation: "close"});
+                }else {
+                    document.getElementById("ignore_btn").innerText="Ignore ("+remainTime+")";
+                    decreaseTime();
+                }
+            }, 1000);
+        }
+
+        window.onload=function () {
+            const mdcRipple = require("@material/ripple");
+
+            new mdcRipple.MDCRipple(document.getElementById("confirm_btn"));
+            new mdcRipple.MDCRipple(document.getElementById("ignore_btn"));
+
+            decreaseTime();
+        }
+    </script>
+    <style>
+        body{
+            width: 300px;
+            height: 100px;
+        }
+
+        .mdc-button{
+            text-transform: capitalize;
+            position: absolute;
+            border-radius:0;
+
+            width: 50%;
+            height: 35px;
+            font-size: 14px;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <img class="window_icon" src="image/ic_icon.svg" alt="icon">
+    <p id="window_title" class="window_title"></p>
+
+    <p id="file_name_text" style="text-align: left;position: absolute;left: 30px;top: 32px"></p>
+
+    <button id="confirm_btn" class="mdc-button mdc-button--unelevated" style="left: 0">Confirm</button>
+    <button id="ignore_btn" class="mdc-button mdc-button--unelevated" style="right: 0">Ignore (15s)</button>
+
+    <script>
+
+    </script>
+
+</body>
+</html>

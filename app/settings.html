@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+    <link rel="stylesheet" href="css/material-components-web.min.css">
+    <link rel="stylesheet" href="css/general.css">
+    <script src="js/material-components-web.min.js"></script>
+
+    <script>
+        const {ipcRenderer} = require('electron');
+        const Store = require('electron-store');
+        const store = new Store();
+        let snackbar = null;
+        function minimizeWindow() {
+            ipcRenderer.send("window-operation",{window: "settings", operation: "minimize"});
+        }
+
+        function closeWindow() {
+            ipcRenderer.send("window-operation",{window: "settings", operation: "close"});
+        }
+
+        function save(){
+            store.set("device_name",document.getElementById("device_name_textfield").value);
+            snackbar.open();
+        }
+
+        function dismissSnackbar(){
+            snackbar.close()
+        }
+
+        window.onload=function () {
+            const mdcTextfield = require('@material/textfield');
+            const mdcRipple = require("@material/ripple");
+            const mdcSnackbar = require('@material/snackbar');
+
+            const textField = new mdcTextfield.MDCTextField(document.querySelector('.mdc-text-field'));
+            document.getElementById("device_name_textfield").value=store.get("device_name");
+            const buttonRipple = new mdcRipple.MDCRipple(document.querySelector('.mdc-button'));
+            snackbar = new mdcSnackbar.MDCSnackbar(document.querySelector('.mdc-snackbar'));
+            snackbar.timeoutMs=4000;
+
+        }
+    </script>
+</head>
+<body>
+<div id="title_bar">
+    <img class="window_icon" src="image/ic_icon.svg" alt="icon">
+    <p class="window_title">Settings</p>
+    <button id="close_window_btn" class="window_action_btn" onclick="closeWindow()"></button>
+    <button id="minimize_window_btn" class="window_action_btn" onclick="minimizeWindow()"></button>
+</div>
+
+<div class="list">
+    <div class="mdc-text-field mdc-text-field--outlined" style="width: 100%;">
+        <input id="device_name_textfield" class="mdc-text-field__input" onkeyup="onKeyUp()">
+        <div class="mdc-notched-outline mdc-notched-outline--upgraded mdc-notched-outline--notched">
+            <div class="mdc-notched-outline__leading"></div>
+            <div class="mdc-notched-outline__notch" style="width: 81.5px;">
+                <label class="mdc-floating-label mdc-floating-label--float-above">Device Name</label>
+            </div>
+            <div class="mdc-notched-outline__trailing"></div>
+        </div>
+    </div>
+</div>
+
+<button id="save_btn" onclick="save()" class="mdc-button mdc-button--outlined" style="position: absolute;right: 30px;bottom: 20px;">Save</button>
+
+<div class="mdc-snackbar">
+    <div class="mdc-snackbar__surface">
+        <div class="mdc-snackbar__label"
+             role="status"
+             aria-live="polite">
+            Settings saved.
+        </div>
+        <div class="mdc-snackbar__actions">
+            <button type="button" class="mdc-button mdc-snackbar__action" onclick="dismissSnackbar()">Dismiss</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -86,3 +86,11 @@ p{
     left: 66px;
     top:45px;
 }
+
+.list{
+    padding: 15px 30px;
+}
+
+.mdc-snackbar__action:not(:disabled){
+    color: var(--mdc-theme-primary);
+}
